@@ -10,8 +10,8 @@ pipeline {
             }
             steps {
                 sh 'mvn -B -DskipTests clean package'
-                sh 'ls -al .'
-                stash includes: "./target/my-app-1.0-SNAPSHOT.jar", name: 'appjar'
+                sh 'ls -al ./target'
+                stash includes: "**/target/*.jar", name: 'appjar'
             }
         }
         stage('Test') {
@@ -37,11 +37,11 @@ pipeline {
                 }
             }
             steps {
-                
                 sh 'ls -al .'
-                unstash appjar
+                unstash name:'appjar'
                 sh 'ls -al ./target'
             }
         }
     }
 }
+
